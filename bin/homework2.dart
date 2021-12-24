@@ -221,7 +221,7 @@ class anyRoot {
     prec = c;
     double root = 20.53;          //начальное значение для последующих итераций
     double numbDegree = root;
-    double div = 1/rootDegree;
+    double div = 1/rootDegree;                    //вот эта задача не получилась, до исключений не дошёл, сломался на формуле корня
     while ((root - root.truncate()) > prec) {
       root = div * ((rootDegree - 1) * root + (numb/numbDegree));
       numbDegree = root;
