@@ -38,8 +38,7 @@ void main() {
   point2.distanceTo(point3);
   point3.distanceTo(point4);
 // задание №7
-  var Root = AnyRoot();
-  Root.searchRoot(27, 3, 0.001);
+  print(4.searchRoot(2)); // корень степени из числа
 // задание №8
   AdminUser('vasia',
       'tesr@pochta.com'); // задание №8 - значение из email, которое находится после @
@@ -222,24 +221,18 @@ class Point {
 }
 
 //_______________________________№7________________________________
-class AnyRoot {
-  double numb = 0;
-  int rootDegree = 1;
-  double prec = 0;
-} //точность
 
-extension SearchRoot on AnyRoot {
-  void searchRoot(double a, int b, double c) {
-    numb = a;
-    rootDegree = b;
-    prec = c;
+extension on num {
+  num searchRoot(num sec) {
+    double prec = 0.001; //точность
     double root = 20; //начальное значение для последующих итераций
 
-    if (numb <= 0) {
+
+    if (this <= 0) {
       throw Exception(
           "Подкоренное выпражение должно быть положительным числом");
     } else {
-      double power(double x, int n) {
+      double power(double x, num n) {
         // возводим корень в степень n-1 для делителя внутри скобок
         double retval = 1;
         for (int i = 0; i < n; i++) {
@@ -251,10 +244,11 @@ extension SearchRoot on AnyRoot {
       double temp = root - 1;
       while ((root - temp).abs() > prec) {
         temp = root;
-        root = (1 / rootDegree) *
-            ((rootDegree - 1) * temp + (numb / power(temp, rootDegree - 1)));
+        root = (1 / sec) *
+            ((sec - 1) * temp + (this / power(temp, sec - 1)));
       }
-      print('Корень степени $rootDegree из $numb = $root');
+      return root;
+      //print('Корень степени $rootDegree из $this = $root');
     }
   }
 }
