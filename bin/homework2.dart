@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
@@ -37,18 +38,20 @@ void main() {
   point2.distanceTo(point3);
   point3.distanceTo(point4);
 // задание №7
-  var Root = anyRoot();
-  Root.searchRoot(4, 2, 0.001);
+  var Root = AnyRoot();
+  Root.searchRoot(27, 3, 0.001);
 // задание №8
-  AdminUser('vasia', 'tesr@pochta.com');              // задание №8 - значение из email, которое находится после @
+  AdminUser('vasia',
+      'tesr@pochta.com'); // задание №8 - значение из email, которое находится после @
   var man2 = GeneralUser('test', 'test@test.com');
   man2.printUser();
-  var userMan = UserManager();                                  // добавляем, удаляем, проверяем
+  var userMan = UserManager(); // добавляем, удаляем, проверяем
   userMan.addUser(man2);
   userMan.printMap();
   userMan.removeUser(man2);
   userMan.printMap();
 }
+
 //____________________________________________№1______________________________
 class DelimetersCalculator {
   int x = 0;
@@ -67,26 +70,29 @@ class DelimetersCalculator {
     var compl = [];
     for (var i = 1; i <= x; i++) {
       if (x % i == 0) {
-        list1.add(i);                                               //выбираем для двух чисел те делители, для которых нет остатка
+        list1.add(
+            i); //выбираем для двух чисел те делители, для которых нет остатка
       }
     }
     for (var j = 1; j <= y; j++) {
       if (y % j == 0) {
-        list2.add(j);                                               //выбираем для двух чисел те делители, для которых нет остатка
+        list2.add(
+            j); //выбираем для двух чисел те делители, для которых нет остатка
       }
     }
     for (int nod in list1) {
       if (list2.contains(nod)) {
-        compl.add(nod);                                            //выбираем общие делители
+        compl.add(nod); //выбираем общие делители
       }
     }
-    int finnod = compl.last;                                       //выбираем последнее значение - НОД
-    var finnok = x * y ~/ finnod;                                  // НОК
+    int finnod = compl.last; //выбираем последнее значение - НОД
+    var finnok = x * y ~/ finnod; // НОК
     print('NOD = $finnod');
     print('NOK = $finnok');
   }
 
-  void simpleM() {                                                //простые множители
+  void simpleM() {
+    //простые множители
     int rez = x;
     var list3 = [];
     int div = 2;
@@ -100,6 +106,7 @@ class DelimetersCalculator {
     }
     print(list3);
   }
+
 //______________________________________№2__________________________
   void convToBin() {
     // в двоичную
@@ -130,6 +137,7 @@ class DelimetersCalculator {
     print(sum);
   }
 }
+
 //_____________________________№3___________________________
 class someWords {
   findNum(str) {
@@ -138,6 +146,7 @@ class someWords {
     final num = exp.allMatches(str).map((m) => m.group(0)).toString();
     return num;
   }
+
 //____________________________№4____________________________
   wordCounter(words) {
     var map = Map();
@@ -150,6 +159,7 @@ class someWords {
     });
     print(map);
   }
+
 //___________________________№5______________________________
   wordsToDigits(strings) {
     Map<String, int> pare = {
@@ -185,6 +195,7 @@ class someWords {
     }
   }
 }
+
 //_________________________________№6__________________________________
 class Point {
   final double x;
@@ -209,27 +220,42 @@ class Point {
     print('Dist between points: $dist');
   }
 }
-//_______________________________№7________________________________
-class anyRoot {
-  double numb = 0;
-  double rootDegree = 1;
-  double prec = 0;                //точность
 
-  void searchRoot(double a, double b, double c) {
+//_______________________________№7________________________________
+class AnyRoot {
+  double numb = 0;
+  int rootDegree = 1;
+  double prec = 0;
+} //точность
+
+extension SearchRoot on AnyRoot {
+  void searchRoot(double a, int b, double c) {
     numb = a;
     rootDegree = b;
     prec = c;
-    double root = 20.53;          //начальное значение для последующих итераций
-    double numbDegree = root;
-    double div = 1/rootDegree;                    //вот эта задача не получилась, до исключений не дошёл, сломался на формуле корня
-    while ((root - root.truncate()) > prec) {
-      root = div * ((rootDegree - 1) * root + (numb/numbDegree));
-      numbDegree = root;
-      for (var j = 1; j < rootDegree; j++) {
-        numbDegree *= numbDegree;
+    double root = 20; //начальное значение для последующих итераций
+
+    if (numb <= 0) {
+      throw Exception(
+          "Подкоренное выпражение должно быть положительным числом");
+    } else {
+      double power(double x, int n) {
+        // считаем корень в степени n-1 для делителя внутри скобок
+        double retval = 1;
+        for (int i = 0; i < n; i++) {
+          retval *= x;
+        }
+        return retval;
       }
+
+      double temp = root - 1;
+      while ((root - temp).abs() > prec) {
+        temp = root;
+        root = (1 / rootDegree) *
+            ((rootDegree - 1) * temp + (numb / power(temp, rootDegree - 1)));
+      }
+      print('Корень степени $rootDegree из $numb = $root');
     }
-    print('Корень: $root');
   }
 }
 
@@ -274,7 +300,8 @@ class UserManager<T extends User> {
   printMap() {
     for (var entry in map.entries) {
       if (entry.key == 'admin') {
-        print('${entry.key}  ${entry.value.substring(entry.value.lastIndexOf("@") + 1)}');
+        print(
+            '${entry.key}  ${entry.value.substring(entry.value.lastIndexOf("@") + 1)}');
       } else {
         print('${entry.key}   ${entry.value}');
       }
@@ -287,4 +314,3 @@ mixin GetMailSystem on User {
     return (email.substring(email.lastIndexOf("@") + 1));
   }
 }
-
