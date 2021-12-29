@@ -240,7 +240,7 @@ extension SearchRoot on AnyRoot {
           "Подкоренное выпражение должно быть положительным числом");
     } else {
       double power(double x, int n) {
-        // считаем корень в степени n-1 для делителя внутри скобок
+        // возводим корень в степень n-1 для делителя внутри скобок
         double retval = 1;
         for (int i = 0; i < n; i++) {
           retval *= x;
